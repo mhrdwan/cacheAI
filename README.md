@@ -153,17 +153,18 @@ cacheAI uses a local embedding model (`all-MiniLM-L6-v2`, ~22MB) that understand
 
 ## Quick Start
 
-### 1. Clone & Build
+### 1. Install Globally & Initialize
 
 ```bash
-git clone https://github.com/mhrdwan/cacheAI.git
-cd cacheAI
-npm install
-npm run build
-npm test  # 14/14 tests pass
+npm install -g cacheai-mcp
+cacheai-mcp init
 ```
 
-### 2. Add to your AI agent config
+The `init` command will:
+1. Auto-patch your `opencode.json` and `claude_desktop_config.json` to register the MCP server.
+2. Install the **cacheAI Skill** into `~/.claude/skills/cacheai/SKILL.md` so your AI agent gets the "instinct" to always load context on startup.
+
+### 2. (Optional) Manual Config
 
 **OpenCode** (`~/.config/opencode/opencode.json`):
 ```json
