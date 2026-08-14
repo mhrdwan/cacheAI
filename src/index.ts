@@ -76,6 +76,23 @@ Do not re-analyze the whole project if cacheAI already knows the stack. Use your
     }
   }
 
+  // 4. Patch Claude CLI config (~/.claude.json)
+  const claudeCliPath = path.join(os.homedir(), '.claude.json')
+  if (fs.existsSync(claudeCliPath)) {
+    try {
+      const config = JSON.parse(fs.readFileSync(claudeCliPath, 'utf8'))
+      config.mcpServers = config.mcpServers || {}
+      config.mcpServers.cacheai = {
+        command: "npx",
+        args: ["-y", "cacheai-mcp", "--project", "."]
+      }
+      fs.writeFileSync(claudeCliPath, JSON.stringify(config, null, 2), 'utf8')
+      console.log('✅ Registered MCP server in ~/.claude.json (Claude CLI)')
+    } catch (e) {
+      console.error('❌ Failed to patch ~/.claude.json:', e)
+    }
+  }
+
   console.log('\n🎉 cacheAI global initialization complete!')
   console.log('Make sure you have installed it globally: npm install -g .')
   process.exit(0)
